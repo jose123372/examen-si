@@ -1,0 +1,333 @@
+# Resumen de Bash para el examen
+
+## Índice
+1. [Navegación por directorios](#1-navegación-por-directorios)
+2. [Creación y gestión de archivos](#2-creación-y-gestión-de-archivos)
+3. [Copiar, mover y eliminar](#3-copiar-mover-y-eliminar)
+4. [Permisos de archivos](#4-permisos-de-archivos)
+5. [Scripts Bash](#5-scripts-bash)
+6. [Variables y parámetros](#6-variables-y-parámetros)
+7. [Condicionales](#7-condicionales)
+8. [Comprobaciones de archivos](#8-comprobaciones-de-archivos)
+9. [Redirecciones](#9-redirecciones)
+10. [Ejercicios típicos de examen](#10-ejercicios-típicos-de-examen)
+
+---
+
+## 1. Navegación por directorios
+
+| Comando | Función |
+|---|---|
+| `pwd` | Muestra la ruta actual |
+| `ls` | Lista archivos y directorios |
+| `ls -a` | Incluye archivos ocultos |
+| `ls -l` | Muestra permisos, propietario, tamaño y fecha |
+| `ls -la` | Combina listado detallado y archivos ocultos |
+| `cd carpeta` | Entra en un directorio |
+| `cd ..` | Sube al directorio anterior |
+| `cd ~` | Va al directorio personal |
+| `cd /ruta/absoluta` | Accede mediante ruta absoluta |
+| `tree` | Muestra la estructura en forma de árbol |
+| `clear` | Limpia la terminal |
+| `history` | Muestra el historial de comandos |
+| `man comando` | Abre el manual de un comando |
+
+**Rutas:**
+- Absoluta: empieza desde `/`. Ejemplo: `/home/alumno/practica_bash`
+- Relativa: parte del directorio actual. Ejemplo: `documentos/texto`
+
+## 2. Creación y gestión de archivos
+
+| Comando | Función |
+|---|---|
+| `mkdir carpeta` | Crea un directorio |
+| `mkdir -p a/b/c` | Crea directorios y subdirectorios necesarios |
+| `touch archivo.txt` | Crea un archivo vacío |
+| `cat archivo.txt` | Muestra el contenido |
+| `nano archivo.txt` | Abre el archivo para editarlo |
+| `echo "texto"` | Muestra texto por pantalla |
+
+**Guardar y salir de Nano:**
+- `Ctrl + O`: guardar
+- `Enter`: confirmar nombre
+- `Ctrl + X`: salir
+
+## 3. Copiar, mover y eliminar
+
+| Comando | Función |
+|---|---|
+| `cp origen destino` | Copia un archivo |
+| `mv origen destino` | Mueve un archivo |
+| `mv viejo nuevo` | Cambia el nombre |
+| `rm archivo` | Elimina un archivo |
+| `rmdir carpeta` | Elimina un directorio vacío |
+| `rm -r carpeta` | Elimina un directorio y su contenido |
+
+**Diferencia importante:**
+- `cp`: conserva el original y crea una copia.
+- `mv`: cambia la ubicación del archivo o su nombre.
+- `rmdir`: solo funciona si el directorio está vacío.
+
+## 4. Permisos de archivos
+
+Los permisos se muestran con `ls -l`.
+
+Ejemplo: `-rwxr-xr--`
+
+| Símbolo | Significado |
+|---|---|
+| `r` | Lectura |
+| `w` | Escritura |
+| `x` | Ejecución |
+| `-` | Permiso no concedido |
+
+Los permisos se agrupan en:
+- Propietario (u)
+- Grupo (g)
+- Otros (o)
+
+### Cambiar permisos con chmod
+
+Modo simbólico:
+```bash
+chmod u+x archivo.sh
+chmod g-w archivo.sh
+chmod o+r archivo.sh
+```
+
+Modo numérico:
+
+| Permiso | Valor |
+|---|---:|
+| `r` | 4 |
+| `w` | 2 |
+| `x` | 1 |
+| `rwx` | 7 |
+| `r-x` | 5 |
+| `r--` | 4 |
+
+Ejemplo:
+```bash
+chmod 754 archivo.sh
+```
+
+Resultado: propietario `rwx`, grupo `r-x`, otros `r--`.
+
+## 5. Scripts Bash
+
+Un script es un archivo que contiene comandos que se ejecutan en orden.
+
+### Crear y ejecutar un script
+
+```bash
+nano saludo.sh
+```
+
+Contenido:
+```bash
+#!/bin/bash
+echo "¡Bienvenido!"
+echo "El script se ha ejecutado correctamente"
+```
+
+Guardar y conceder permiso de ejecución:
+```bash
+chmod u+x saludo.sh
+```
+
+Ejecutar:
+```bash
+./saludo.sh
+```
+
+## 6. Variables y parámetros
+
+### Variables
+
+```bash
+nombre="Ana"
+curso="ASIR"
+
+echo "$nombre"
+echo "$curso"
+echo "Hola $nombre, estudias $curso"
+```
+
+**Importante:** no se dejan espacios alrededor del `=` al asignar variables.
+
+### Parámetros posicionales
+
+Un script puede recibir datos desde la terminal.
+
+| Parámetro | Significado |
+|---|---|
+| `$0` | Nombre del script |
+| `$1` | Primer parámetro |
+| `$2` | Segundo parámetro |
+| `$3` | Tercer parámetro |
+| `$#` | Número de parámetros |
+| `$@` | Todos los parámetros |
+
+Ejemplo:
+```bash
+#!/bin/bash
+echo "Hola $1, tienes $2 años"
+```
+
+Ejecución:
+```bash
+./presentacion.sh Ana 18
+```
+
+## 7. Condicionales
+
+### Estructura if / else
+
+```bash
+if [ condición ]; then
+    echo "Se cumple"
+else
+    echo "No se cumple"
+fi
+```
+
+### if / elif / else
+
+```bash
+if [ condición1 ]; then
+    echo "Caso 1"
+elif [ condición2 ]; then
+    echo "Caso 2"
+else
+    echo "Otro caso"
+fi
+```
+
+### Comparaciones numéricas
+
+| Operador | Significado |
+|---|---|
+| `-eq` | Igual |
+| `-ne` | Distinto |
+| `-gt` | Mayor que |
+| `-lt` | Menor que |
+| `-ge` | Mayor o igual |
+| `-le` | Menor o igual |
+
+Ejemplo:
+```bash
+if [ "$1" -gt "$2" ]; then
+    echo "El primero es mayor"
+elif [ "$1" -lt "$2" ]; then
+    echo "El primero es menor"
+else
+    echo "Son iguales"
+fi
+```
+
+## 8. Comprobaciones de archivos
+
+| Prueba | Comprueba |
+|---|---|
+| `-e ruta` | Si existe |
+| `-f ruta` | Si existe y es un archivo normal |
+| `-d ruta` | Si existe y es un directorio |
+| `-x ruta` | Si tiene permiso de ejecución |
+
+Ejemplo:
+```bash
+if [ -f "$1" ]; then
+    echo "Es un archivo"
+elif [ -d "$1" ]; then
+    echo "Es un directorio"
+else
+    echo "La ruta no existe"
+fi
+```
+
+## 9. Redirecciones
+
+| Operador | Función |
+|---|---|
+| `>` | Escribe y sobrescribe el contenido |
+| `>>` | Añade al final sin borrar lo anterior |
+
+Ejemplos:
+```bash
+echo "Primera línea" > apuntes.txt
+echo "Segunda línea" >> apuntes.txt
+cat apuntes.txt
+```
+
+## 10. Ejercicios típicos de examen
+
+### Comprobar que se reciben dos parámetros
+
+```bash
+#!/bin/bash
+
+if [ "$#" -ne 2 ]; then
+    echo "Uso: $0 parametro1 parametro2"
+    exit 1
+fi
+
+echo "Parámetro 1: $1"
+echo "Parámetro 2: $2"
+```
+
+### Clasificar un número
+
+```bash
+#!/bin/bash
+
+if [ "$1" -gt 0 ]; then
+    echo "Positivo"
+elif [ "$1" -lt 0 ]; then
+    echo "Negativo"
+else
+    echo "Cero"
+fi
+```
+
+### Comprobar si un archivo existe y añadir texto
+
+```bash
+#!/bin/bash
+
+if [ -f "$1" ]; then
+    echo "$2" >> "$1"
+    echo "Texto añadido correctamente"
+else
+    echo "El archivo no existe"
+fi
+```
+
+### Copia de seguridad
+
+```bash
+#!/bin/bash
+
+if [ "$#" -ne 2 ]; then
+    echo "Uso: $0 origen destino"
+elif [ ! -f "$1" ]; then
+    echo "El archivo de origen no existe"
+elif [ ! -d "$2" ]; then
+    echo "El directorio de destino no existe"
+else
+    cp "$1" "$2"
+    echo "Copia realizada correctamente"
+fi
+```
+
+---
+
+## Consejos para el examen
+
+- Lee el enunciado completo antes de ejecutar comandos.
+- Comprueba los resultados con `ls`, `cat` o `tree`.
+- Usa comillas en variables y parámetros: `"$1"`.
+- Recuerda que los scripts necesitan permisos de ejecución.
+- Comprueba el número de parámetros con `$#`.
+- Usa `-f` para archivos y `-d` para directorios.
+- No confundas `>` con `>>`.
+- Practica escribiendo los scripts sin mirar los apuntes.
